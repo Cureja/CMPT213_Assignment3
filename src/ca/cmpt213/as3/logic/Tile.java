@@ -1,4 +1,17 @@
 package ca.cmpt213.as3.logic;
 
-public class Tile {
+public enum Tile {
+    HIDDEN_TANK, HIDDEN_MISS, TANK, MISS;
+    char tileState;
+
+    @Override
+    String toString(){
+
+    }
+
+    void reveal() {
+
+    }
+
+
 }

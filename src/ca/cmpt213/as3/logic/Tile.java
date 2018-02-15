@@ -5,6 +5,7 @@ public enum Tile {
     private final int HIDDEN_THRESHOLD = 2;
     private int tileState;
 
+
     Tile(int tileState) {
         this.tileState = tileState;
     }

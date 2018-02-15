@@ -1,5 +1,7 @@
 package ca.cmpt213.as3.logic;
 
+
+
 public class Location {
     public int row;
     public int col;

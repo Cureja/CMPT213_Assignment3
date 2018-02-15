@@ -1,8 +1,8 @@
 package ca.cmpt213.as3.logic;
 
 public enum Tile {
-    HIDDEN_TANK, HIDDEN_MISS, TANK, MISS;
-    char tileState;
+    HIDDEN_MISS, HIDDEN_TANK, MISS, TANK;
+    int tileState;
 
     @Override
     String toString(){
@@ -10,7 +10,9 @@ public enum Tile {
     }
 
     void reveal() {
-
+        if(tileState < 2) {
+            tileState += 2;
+        }
     }
 
 

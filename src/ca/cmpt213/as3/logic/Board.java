@@ -1,10 +1,11 @@
 package ca.cmpt213.as3.logic;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     private final int BOARD_DIMENSION = 10;
-    private ArrayList<Tank> tanksOnBoard = new ArrayList<Tank>();
+    private List<Tank> tanksOnBoard = new ArrayList<Tank>();
     private Tile[][] board;
 
     public Board(int numberOfTanks) {
@@ -19,26 +20,32 @@ public class Board {
     }
 
     private void createTankOnBoard() {
-        ArrayList<Location> tank;
-        ArrayList<Location> options;
+        List<Location> tank = new ArrayList<Location>();
+        List<Location> options = new ArrayList<Location>();
         int row, col;
         do {
             row = (int) (BOARD_DIMENSION * Math.random());
             col = (int) (BOARD_DIMENSION * Math.random());
         } while(board[row][col] != Tile.HIDDEN_MISS);
 
+        Location start = new Location(row, col);
+        tank.add(start);
+        options.addAll(legalConnectingTiles(start));
+
+        addSectionsToTank(tank,options);
     }
 
-    private boolean addSectionsToTank(ArrayList<Location> tank, ArrayList<Location> options, int size) {
-        if (size == Tank.getSize()) {
+    private boolean addSectionsToTank(List<Location> tank, List<Location> options) {
+        if (tank.size() == Tank.getSize()) {
+            getMaxPiecesCanAdd();
             return true;
         }
         int selection = (int)(options.size() * Math.random());
 
     }
 
-    private ArrayList<Location> legalConnectingTiles(Location location) {
-        ArrayList<Location> legal = new ArrayList<Location>();
+    private List<Location> legalConnectingTiles(Location location) {
+        List<Location> legal = new ArrayList<Location>();
         Location up    = new Location(location.row - 1, location.col);
         Location down  = new Location(location.row + 1, location.col);
         Location left  = new Location(location.row, location.col - 1);
@@ -90,8 +97,12 @@ public class Board {
 
     }
 
+    private int getMaxPiecesCanAddToArea(Location) {
+
+    }
+
     // Helper method for getMaxPiecesCanAdd
-    private int floodFill(Location location) {
+    private int floodFill(Location location, Tile state) {
 
     }
 }

@@ -25,11 +25,17 @@
       <file leaf-file-name="Board.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ca/cmpt213/as3/logic/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+            <state relative-caret-position="550">
+              <caret line="108" column="0" lean-forward="true" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding>
-                <element signature="e#181#187#0" expanded="true" />
-                <element signature="e#1320#1330#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#199#205#0" expanded="true" />
+                <element signature="e#723#733#0" expanded="true" />
+                <element signature="e#783#793#0" expanded="true" />
+                <element signature="method#legalConnectingTiles#0;class#Board#0" expanded="false" />
+                <element signature="e#1564#1574#0" expanded="true" />
+                <element signature="method#isInBounds#0;class#Board#0" expanded="false" />
+                <element signature="method#getTile#0;class#Board#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -367,7 +373,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -399,8 +407,14 @@
         <state relative-caret-position="374">
           <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding>
-            <element signature="e#181#187#0" expanded="true" />
-            <element signature="e#1320#1330#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#199#205#0" expanded="true" />
+            <element signature="e#723#733#0" expanded="true" />
+            <element signature="e#783#793#0" expanded="true" />
+            <element signature="method#legalConnectingTiles#0;class#Board#0" expanded="false" />
+            <element signature="e#1564#1574#0" expanded="true" />
+            <element signature="method#isInBounds#0;class#Board#0" expanded="false" />
+            <element signature="method#getTile#0;class#Board#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -433,8 +447,14 @@
         <state relative-caret-position="288">
           <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="40" />
           <folding>
-            <element signature="e#181#187#0" expanded="true" />
-            <element signature="e#1320#1330#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#199#205#0" expanded="true" />
+            <element signature="e#723#733#0" expanded="true" />
+            <element signature="e#783#793#0" expanded="true" />
+            <element signature="method#legalConnectingTiles#0;class#Board#0" expanded="false" />
+            <element signature="e#1564#1574#0" expanded="true" />
+            <element signature="method#isInBounds#0;class#Board#0" expanded="false" />
+            <element signature="method#getTile#0;class#Board#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -488,11 +508,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/cmpt213/as3/logic/Board.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        <state relative-caret-position="550">
+          <caret line="108" column="0" lean-forward="true" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding>
-            <element signature="e#181#187#0" expanded="true" />
-            <element signature="e#1320#1330#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#199#205#0" expanded="true" />
+            <element signature="e#723#733#0" expanded="true" />
+            <element signature="e#783#793#0" expanded="true" />
+            <element signature="method#legalConnectingTiles#0;class#Board#0" expanded="false" />
+            <element signature="e#1564#1574#0" expanded="true" />
+            <element signature="method#isInBounds#0;class#Board#0" expanded="false" />
+            <element signature="method#getTile#0;class#Board#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -7,7 +7,7 @@ package ca.cmpt213.as3.logic;
 
 public class Player {
     private int health;
-    private final int MAX_HEALTH = 1500;
+    private static final int MAX_HEALTH = 1500;
 
     //Player constuctor
     Player() {
@@ -22,6 +22,6 @@ public class Player {
 
     //Player
     void takeDamage(int damage) {
-        this.health = this.health - damage;
+        this.health -= damage;
     }
 }

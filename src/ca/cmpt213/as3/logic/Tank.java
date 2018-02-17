@@ -2,11 +2,12 @@ package ca.cmpt213.as3.logic;
 
 public class Tank {
     private static final int size = 4;
-    private int tankHealth;
-    private Location[] tankLocation;
+    private static final int[] damage = {0,1,2,5,20};
+    private int health;
+    private Location[] tankLocations;
 
-    Tank(int health, Location[] tankLocation) {
-        tankHealth = health;
+    Tank(Location start) {
+        this.health = size;
     }
 
     public static int getSize(){
@@ -14,14 +15,19 @@ public class Tank {
     }
 
     public int getAttack() {
-
+        return damage[health];
     }
 
-    public int decreaseHealth() {
-
+    public void decreaseHealth() {
+        health--;
     }
 
-    public boolean isInBounds() {
-
+    public boolean isInBounds(Location location) {
+        for (Location tank : tankLocations) {
+            if(tank.isEquals(location)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -11,6 +11,11 @@ public class Location {
         this.col = col;
     }
 
+    Location(Location other) {
+        this.row = other.row;
+        this.col = other.col;
+    }
+
     public boolean isEquals(Location other) {
         return (row == other.row && col == other.col);
     }

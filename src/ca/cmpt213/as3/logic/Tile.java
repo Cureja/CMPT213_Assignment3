@@ -4,27 +4,27 @@ public enum Tile {
     HIDDEN_TANK (0), HIDDEN_MISS(1), TANK(2), MISS(3);
 
     private final int HIDDEN_THRESHOLD = 2;
-    private int tileState;
+    private int state;
 
-    Tile(int tileState) {
-        this.tileState = tileState;
+    Tile(int state) {
+        this.state = state;
     }
 
-    public int getTileState() {
-        return tileState;
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public boolean isHidden() {
-        return tileState <= HIDDEN_THRESHOLD;
+        return state <= HIDDEN_THRESHOLD;
     }
 
     public void reveal() {
         if (isHidden()) {
-            tileState += HIDDEN_THRESHOLD;
+            state += HIDDEN_THRESHOLD;
         }
     }
-
-//    public boolean isEquals(Tile other) {
-//        return tileState == other.tileState;
-//    }
 }

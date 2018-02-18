@@ -6,8 +6,9 @@ public class Tank {
     private int health;
     private Location[] tankLocations;
 
-    Tank(Location start) {
+    Tank(Location[] tankLocations) {
         this.health = size;
+        this.tankLocations = tankLocations;
     }
 
     public static int getSize(){

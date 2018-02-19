@@ -14,6 +14,7 @@ public class Board {
         if(numberOfTanks > maxTanksOnBoard) {
             throw new IllegalArgumentException("Cannot fit inputted tanks on board");
         }
+        board = new Tile[BOARD_DIMENSION][BOARD_DIMENSION];
         createTanksOnBoard(numberOfTanks);
     }
 
@@ -38,10 +39,9 @@ public class Board {
     }
 
     private boolean addSectionsToTank(List<Location> tank, List<Location> pastOptions, Integer tanksToBeAdded) {
-        if (tank.size() == Tank.getSize()) {
-            if (tanksToBeAdded < getMaxPiecesCanAdd()) {
-                return false;
-            }
+        if (tanksToBeAdded < getMaxPiecesCanAdd()) {
+            return false;
+        } else if (tank.size() == Tank.getSize()) {
             return true;
         }
         List<Location> options  = new ArrayList<>();
@@ -49,9 +49,22 @@ public class Board {
             options.add(new Location(past));
         }
 
-        int selection = (int)(options.size() * Math.random());
-        tank.add(options.remove(selection));
-
+        boolean isSelectionCorrect = false;
+        List<Location> trialSurround = null;
+        while(!isSelectionCorrect) {
+            if(options.isEmpty()) {
+                return false;
+            } else if(trialSurround != null) {
+                options.removeAll(trialSurround);
+            }
+            int selection = (int)(options.size() * Math.random());
+            Location trialSection = options.remove(selection);
+            tank.add(trialSection);
+            trialSurround = legalConnectingTileLocations(trialSection);
+            options.addAll(trialSurround);
+            isSelectionCorrect = addSectionsToTank(tank, options, tanksToBeAdded);
+        }
+        return true;
     }
 
     private List<Location> legalConnectingTileLocations(Location location) {
@@ -92,15 +105,28 @@ public class Board {
     }
 
     public int attackPlayer() {
-
+        int damage = 0;
+        for(Tank tank : tanksOnBoard) {
+            damage += tank.getAttack();
+        }
+        return damage;
     }
 
-    public Tile fireAtLocation(Location location) {
+    public boolean fireAtLocation(Location location) {
+        Tile tile = getTile(location);
+        if(tile.isHidden()) {
 
+        }
+        return false;
     }
 
     public boolean isGameWon() {
-
+        for(Tank tank : tanksOnBoard) {
+            if(!tank.isDamaged()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private int getMaxPiecesCanAdd() {

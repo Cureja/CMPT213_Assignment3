@@ -15,6 +15,10 @@ public class Tank {
         return size;
     }
 
+    public boolean isDamaged() {
+        return health < size;
+    }
+
     public int getAttack() {
         return damage[health];
     }

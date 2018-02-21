@@ -114,7 +114,15 @@ public class Board {
     public boolean fireAtLocation(Location location) {
         Tile tile = getTile(location);
         if(tile.isHidden()) {
-
+            tile.reveal();
+            if (tile.isTank()) {
+                for(Tank tank : tanksOnBoard) {
+                    if(tank.isInBounds(location)) {
+                        tank.decreaseHealth();
+                    }
+                }
+                return true;
+            }
         }
         return false;
     }

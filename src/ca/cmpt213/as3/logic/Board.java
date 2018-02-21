@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Board {
     private final int BOARD_DIMENSION = 10;
-    private List<Tank> tanksOnBoard = new ArrayList<Tank>();
+    private List<Tank> tanksOnBoard = new ArrayList<>();
     private Tile[][] board;
 
     public Board(int numberOfTanks) {
@@ -138,10 +138,10 @@ public class Board {
             }
         }
         //clean up floodFillEmpty
-        for(Tile[] row : board) {
-            for(Tile tile : row) {
-                if(tile.getState() == -1) {
-                    tile = Tile.HIDDEN_MISS;
+        for(int row = 0; row < BOARD_DIMENSION; row++) {
+            for(int col = 0; col < BOARD_DIMENSION; col++) {
+                if(board[row][col].getState() == -1) {
+                    board[row][col] = Tile.HIDDEN_MISS;
                 }
             }
         }
@@ -152,13 +152,14 @@ public class Board {
         if(getTile(start) == Tile.HIDDEN_MISS) {
             int maxPieces = floodFillEmpty(start) / Tank.getSize();
             //clean up floodFillEmpty
-            for(Tile[] row : board) {
-                for(Tile tile : row) {
-                    if(tile.getState() == -1) {
-                        tile = Tile.HIDDEN_MISS;
+            for(int row = 0; row < BOARD_DIMENSION; row++) {
+                for(int col = 0; col < BOARD_DIMENSION; col++) {
+                    if(board[row][col].getState() == -1) {
+                        board[row][col] = Tile.HIDDEN_MISS;
                     }
                 }
             }
+            return maxPieces;
         }
         return 0;
     }

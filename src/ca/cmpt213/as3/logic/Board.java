@@ -26,8 +26,7 @@ public class Board {
             do {
                 row = (int) (BOARD_DIMENSION * Math.random());
                 col = (int) (BOARD_DIMENSION * Math.random());
-            } while (board[row][col] != Tile.HIDDEN_MISS);
-
+            } while (board[row][col] != Tile.HIDDEN_MISS && getMaxPiecesCanAddToArea(new Location(row,col)) > 0);
             Location start = new Location(row, col);
             tank.add(start);
             options.addAll(legalConnectingTileLocations(start));

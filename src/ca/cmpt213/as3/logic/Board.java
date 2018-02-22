@@ -34,9 +34,10 @@ public class Board {
             } while (board[row][col] != Tile.HIDDEN_MISS && getMaxPiecesCanAddToArea(new Location(row,col)) > 0);
             Location start = new Location(row, col);
             tank.add(start);
+            //System.out.println(getMaxPiecesCanAdd());
+            board[row][col] = Tile.HIDDEN_TANK;
             options.addAll(legalConnectingTileLocations(start));
             addSectionsToTank(tank, options, tanksToAdd - tanksAdded);
-
             Location[] tankLocation = tank.toArray(new Location[0]);
             tanksOnBoard.add(new Tank(tankLocation));
         }
@@ -59,11 +60,15 @@ public class Board {
             if(options.isEmpty()) {
                 return false;
             } else if(trialSurround != null) {
+                Location remove = tank.get(tank.size()-1);
+                board[remove.row][remove.col] = Tile.HIDDEN_MISS;
+                tank.remove(tank.size()-1);
                 options.removeAll(trialSurround);
             }
             int selection = (int)(options.size() * Math.random());
             Location trialSection = options.remove(selection);
             tank.add(trialSection);
+            board[trialSection.row][trialSection.col] = Tile.HIDDEN_TANK;
             trialSurround = legalConnectingTileLocations(trialSection);
             options.addAll(trialSurround);
             isSelectionCorrect = addSectionsToTank(tank, options, tanksToBeAdded);
@@ -146,14 +151,16 @@ public class Board {
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
                 if(board[row][col] == Tile.HIDDEN_MISS) {
-                    maxPieces += floodFillEmpty(new Location(row, col)) / Tank.getSize();
+                    int i = floodFillEmpty(new Location(row, col));
+                    System.out.println(i);
+                    maxPieces += i;
                 }
             }
         }
         //clean up floodFillEmpty
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
-                if(board[row][col].getState() == -1) {
+                if(board[row][col] == Tile.MISS) {
                     board[row][col] = Tile.HIDDEN_MISS;
                 }
             }
@@ -167,7 +174,7 @@ public class Board {
             //clean up floodFillEmpty
             for(int row = 0; row < BOARD_DIMENSION; row++) {
                 for(int col = 0; col < BOARD_DIMENSION; col++) {
-                    if(board[row][col].getState() == -1) {
+                    if(board[row][col] == Tile.MISS) {
                         board[row][col] = Tile.HIDDEN_MISS;
                     }
                 }
@@ -177,13 +184,11 @@ public class Board {
         return 0;
     }
 
-
-
     private int floodFillEmpty(Location start) {
-        int sum = 1;
+        int sum = 0;
         List<Location> adjacent = legalConnectingTileLocations(start);
         for(Location tile : adjacent) {
-            getTile(tile).setState(-1);
+            board[tile.row][tile.col] = Tile.MISS;
         }
         for(Location tile : adjacent) {
             sum += floodFillEmpty(tile);

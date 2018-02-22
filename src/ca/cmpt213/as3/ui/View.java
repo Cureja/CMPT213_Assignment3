@@ -6,10 +6,7 @@ import ca.cmpt213.as3.logic.Tile;
 
 public class View {
     //some final variable
-    private final int BOARD_SIZE = 9;
-    private final int HIDDEN_TILE = 0;
-    private final int HIDDEN_TANK = 1;
-    private final int TANK = 2;
+    private final int BOARD_SIZE = 10;
 
     //Default constructor that doesn't do anything
     public View() {            }
@@ -27,11 +24,10 @@ public class View {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 Location placeHolderLocation = new Location(i, j);
                 Tile gameTile = gameBoard.getTile(placeHolderLocation);
-                int tileState = gameTile.getState();
-                if(tileState == HIDDEN_TILE || tileState == HIDDEN_TANK) {
+                if(gameTile == Tile.HIDDEN_MISS) {
                     System.out.print("  ~");
                 }
-                else if(tileState == TANK) {
+                else if(gameTile == Tile.HIDDEN_TANK) {
                     System.out.print("  X");
                 }
                 else {

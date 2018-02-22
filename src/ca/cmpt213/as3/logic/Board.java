@@ -15,6 +15,11 @@ public class Board {
             throw new IllegalArgumentException("Cannot fit inputted tanks on board");
         }
         board = new Tile[BOARD_DIMENSION][BOARD_DIMENSION];
+        for(int row = 0; row < BOARD_DIMENSION; row++) {
+            for(int col = 0; col < BOARD_DIMENSION; col++) {
+                board[row][col] = Tile.HIDDEN_MISS;
+            }
+        }
         createTanksOnBoard(numberOfTanks);
     }
 
@@ -171,6 +176,8 @@ public class Board {
         }
         return 0;
     }
+
+
 
     private int floodFillEmpty(Location start) {
         int sum = 1;

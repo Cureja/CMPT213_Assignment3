@@ -10,7 +10,7 @@ public class Player {
     private static final int MAX_HEALTH = 1500;
 
     //Player constuctor
-    Player() {
+    public Player() {
         this.health = MAX_HEALTH;
     }
 
@@ -23,5 +23,10 @@ public class Player {
     //Player
     void takeDamage(int damage) {
         this.health -= damage;
+    }
+
+    //Game check
+    public boolean isGameLoss() {
+        return health == 0;
     }
 }

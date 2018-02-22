@@ -151,8 +151,9 @@ public class Board {
         int maxPieces = 0;
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
-                if(board[row][col].isHidden()) {
-                    board[row][col].setIsHidden(false);
+                Tile tile = board[row][col];
+                if(tile.isHidden() && !tile.isTank()) {
+                    tile.setIsHidden(false);
                     maxPieces += floodFillEmpty(new Location(row, col)) / Tank.getSize();
                 }
             }

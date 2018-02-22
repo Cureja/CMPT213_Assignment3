@@ -114,7 +114,7 @@ public class Board {
         return null;
     }
 
-    public int attackPlayer() {
+    public int getTotalDamageDealt() {
         int damage = 0;
         for(Tank tank : tanksOnBoard) {
             damage += tank.getAttack();

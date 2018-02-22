@@ -21,7 +21,7 @@ public class Player {
     }
 
     //Player
-    void takeDamage(int damage) {
+    public void takeDamage(int damage) {
         this.health -= damage;
     }
 

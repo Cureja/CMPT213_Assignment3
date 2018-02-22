@@ -19,13 +19,13 @@ public class Game {
 
 
     public static void main(String[] args) {
-        int numberOfTanks = Integer.parseInt(args[0]);
         argsCheck(args);
+        int numberOfTanks = Integer.parseInt(args[0]);
         if(args.length == 1) {
             playGame(numberOfTanks);
         }
         else {
-
+            playCheatGame(numberOfTanks);
         }
     }
 
@@ -75,9 +75,6 @@ public class Game {
                 }
             }
 
-            //This is the check when the user decides not add a number for tank and takes in a solo --cheat parameter
-            Integer.parseInt(args[0]);
-
 
             //Checks if the user entered a negative amount of tanks
             if(Integer.parseInt(args[0]) < 0) {
@@ -110,36 +107,57 @@ public class Game {
         Input inputHandler = new Input();
         printWelcome();
         outputConsole.printBoard(gameBoard, theFortress);
-        while(!(gameBoard.isGameWon() || theFortress.isGameLoss())) {
-           Scanner userInput = new Scanner(System.in);
-           String input = userInput.nextLine();
-           Location convertedInput = inputHandler.readLocation(input);
-           boolean isShotATank = gameBoard.fireAtLocation(convertedInput);
-           if(isShotATank) {
-               System.out.println("Nice Shot Commander, that was a hit!");
-           }
-           else {
-               System.out.println("Nice try Commander, that was a miss.");
-           }
-           List<Tank> gameTanks = gameBoard.getTanksOnBoard();
-           printTankAttacks(gameTanks);
-           int totalGDamage = gameBoard.getTotalDamageDealt();
-           theFortress.takeDamage(totalGDamage);
-           outputConsole.printBoard(gameBoard, theFortress);
-        }
+        gameLoop(gameBoard, theFortress, outputConsole, inputHandler);
         if(gameBoard.isGameWon()) {
             System.out.println("Congratulations! You won! The enemies are on the run");
         }
         else {
             System.out.println("I'm sorry commander, the fortress has been smashed.");
         }
+        outputConsole.printGameOverBoard(gameBoard, theFortress);
     }
 
-
+    //This version of the game prints out the answer key.
     private static void playCheatGame(int numberOfTanks) {
+        Board gameBoard = new Board(numberOfTanks);
+        Player theFortress = new Player();
+        View outputConsole = new View();
+        Input inputHandler = new Input();
+        printWelcome();
+        outputConsole.printCheatBoard(gameBoard, theFortress);
+        gameLoop(gameBoard, theFortress, outputConsole, inputHandler);
+        if(gameBoard.isGameWon()) {
+            System.out.println("Congratulations! You won! The enemies are on the run");
+        }
+        else {
+            System.out.println("I'm sorry commander, the fortress has been smashed.");
+        }
+        outputConsole.printCheatGameOverBoard(gameBoard, theFortress);
+    }
+
+    //Here is the game loop that both the cheatBoard and normal board use
+    private static void gameLoop(Board gameBoard, Player theFortress, View outputConsole, Input inputHandler) {
+        while(!(gameBoard.isGameWon() || theFortress.isGameLoss())) {
+            Scanner userInput = new Scanner(System.in);
+            String input = userInput.nextLine();
+            Location convertedInput = inputHandler.readLocation(input);
+            boolean isShotATank = gameBoard.fireAtLocation(convertedInput);
+            if(isShotATank) {
+                System.out.println("Nice Shot Commander, that was a hit!");
+            }
+            else {
+                System.out.println("Nice try Commander, that was a miss.");
+            }
+            List<Tank> gameTanks = gameBoard.getTanksOnBoard();
+            printTankAttacks(gameTanks);
+            int totalGDamage = gameBoard.getTotalDamageDealt();
+            theFortress.takeDamage(totalGDamage);
+            outputConsole.printBoard(gameBoard, theFortress);
+        }
 
     }
 
+    //This function prints out the sequence of tank attacks
     private static void printTankAttacks(List<Tank> gameTanks) {
         int numberOfAliveTanks = gameTanks.size();
         for(Tank tank:gameTanks) {

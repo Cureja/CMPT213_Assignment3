@@ -1,4 +1,5 @@
 package ca.cmpt213.as3.logic;
 
-public class TileState {
+public enum TileState {
+    MISS, TANK
 }

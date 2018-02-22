@@ -1,26 +1,35 @@
 package ca.cmpt213.as3.logic;
 
-public enum Tile {
-    HIDDEN_TANK (0), HIDDEN_MISS(1), TANK(2), MISS(3);
+public class Tile {
+    private TileState state;
+    private boolean isHidden;
 
-    private final int NUMBER_OF_STATES = 2;
-    private int state;
+    Tile() {
+        this.state = TileState.MISS;
+        isHidden = true;
+    }
 
-    Tile(int state) {
+    public TileState getState() {
+        return state;
+    }
+
+    public void setState(TileState state) {
         this.state = state;
     }
 
     public boolean isHidden() {
-        return state <= NUMBER_OF_STATES;
+        return isHidden;
+    }
+
+    public void setIsHidden(boolean set) {
+        isHidden = set;
     }
 
     public boolean isTank() {
-        return (state % 2  == 0);
+        return state == TileState.TANK;
     }
 
     public void reveal() {
-        if (isHidden()) {
-            state += NUMBER_OF_STATES;
-        }
+        isHidden = false;
     }
 }

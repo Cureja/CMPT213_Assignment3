@@ -17,7 +17,7 @@ public class Board {
         board = new Tile[BOARD_DIMENSION][BOARD_DIMENSION];
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
-                board[row][col] = Tile.HIDDEN_MISS;
+                board[row][col] = new Tile();
             }
         }
         createTanksOnBoard(numberOfTanks);
@@ -32,10 +32,10 @@ public class Board {
             do {
                 row = (int) (BOARD_DIMENSION * Math.random());
                 col = (int) (BOARD_DIMENSION * Math.random());
-            } while (board[row][col] != Tile.HIDDEN_MISS || getMaxPiecesCanAddToArea(new Location(row,col)) == 0);
+            } while (board[row][col].getState() != TileState.MISS || getMaxPiecesCanAddToArea(new Location(row,col)) == 0);
             Location start = new Location(row, col);
             tank.add(start);
-            board[row][col] = Tile.HIDDEN_TANK;
+            board[row][col].setState(TileState.TANK);
             options.addAll(legalConnectingTileLocations(start));
             addSectionsToTank(tank, options, tanksToAdd - tanksAdded);
             Location[] tankLocation = tank.toArray(new Location[0]);
@@ -59,7 +59,7 @@ public class Board {
         while(!isSelectionCorrect) {
             if(trialSurround != null) {
                 Location remove = tank.get(tank.size()-1);
-                board[remove.row][remove.col] = Tile.HIDDEN_MISS;
+                board[remove.row][remove.col].setState(TileState.MISS);
                 tank.remove(tank.size()-1);
                 options.removeAll(trialSurround);
             }
@@ -69,7 +69,7 @@ public class Board {
             int selection = (int)(options.size() * Math.random());
             Location trialSection = options.remove(selection);
             tank.add(trialSection);
-            board[trialSection.row][trialSection.col] = Tile.HIDDEN_TANK;
+            board[trialSection.row][trialSection.col].setState(TileState.TANK);
             trialSurround = legalConnectingTileLocations(trialSection);
             options.addAll(trialSurround);
             isSelectionCorrect = addSectionsToTank(tank, options, tanksToBeAdded);
@@ -83,22 +83,22 @@ public class Board {
         Location down  = new Location(location.row + 1, location.col);
         Location left  = new Location(location.row, location.col - 1);
         Location right = new Location(location.row, location.col + 1);
-        if(isInBounds(up) && getTile(up) == Tile.HIDDEN_MISS) {
+        if(isInBounds(up) && !getTile(up).isTank() && getTile(up).isHidden()) {
             legal.add(up);
         }
-        if(isInBounds(down) && getTile(down) == Tile.HIDDEN_MISS) {
+        if(isInBounds(down) && !getTile(down).isTank() && getTile(down).isHidden()) {
             legal.add(down);
         }
-        if(isInBounds(left) && getTile(left) == Tile.HIDDEN_MISS) {
+        if(isInBounds(left) && !getTile(left).isTank() && getTile(left).isHidden()) {
             legal.add(left);
         }
-        if(isInBounds(right) && getTile(right) == Tile.HIDDEN_MISS) {
+        if(isInBounds(right) && !getTile(right).isTank() && getTile(right).isHidden()) {
             legal.add(right);
         }
         return legal;
     }
 
-    public boolean isInBounds(Location location) {
+    private boolean isInBounds(Location location) {
         if(0 <= location.row && location.row < BOARD_DIMENSION) {
             if(0 <= location.col && location.col < BOARD_DIMENSION) {
                 return true;
@@ -151,8 +151,8 @@ public class Board {
         int maxPieces = 0;
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
-                if(board[row][col] == Tile.HIDDEN_MISS) {
-                    board[row][col] = Tile.MISS;
+                if(board[row][col].isHidden()) {
+                    board[row][col].setIsHidden(false);
                     maxPieces += floodFillEmpty(new Location(row, col)) / Tank.getSize();
                 }
             }
@@ -160,8 +160,8 @@ public class Board {
         //clean up floodFillEmpty
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
-                if(board[row][col] == Tile.MISS) {
-                    board[row][col] = Tile.HIDDEN_MISS;
+                if(!board[row][col].isHidden()) {
+                    board[row][col].setIsHidden(true);
                 }
             }
         }
@@ -169,14 +169,14 @@ public class Board {
     }
 
     private int getMaxPiecesCanAddToArea(Location start) {
-        if(getTile(start) == Tile.HIDDEN_MISS) {
-            board[start.row][start.col] = Tile.MISS;
+        if(getTile(start).isHidden()) {
+            board[start.row][start.col].setIsHidden(false);
             int maxPieces = floodFillEmpty(start) / Tank.getSize();
             //clean up floodFillEmpty
             for(int row = 0; row < BOARD_DIMENSION; row++) {
                 for(int col = 0; col < BOARD_DIMENSION; col++) {
-                    if(board[row][col] == Tile.MISS) {
-                        board[row][col] = Tile.HIDDEN_MISS;
+                    if(!board[row][col].isHidden()) {
+                        board[row][col].setIsHidden(true);
                     }
                 }
             }
@@ -190,7 +190,7 @@ public class Board {
         int sum = 1;
         List<Location> adjacent = legalConnectingTileLocations(start);
         for(Location tile : adjacent) {
-            board[tile.row][tile.col] = Tile.MISS;
+            board[tile.row][tile.col].setIsHidden(false);
         }
         for(Location tile : adjacent) {
             sum += floodFillEmpty(tile);
@@ -202,7 +202,7 @@ public class Board {
         return tanksOnBoard;
     }
 
-    private int getTankIndex(Location location) {
+    public int getTankIndex(Location location) {
         for(int i = 0; i < tanksOnBoard.size(); i++) {
             Tank tank = tanksOnBoard.get(i);
             if(tank.isInBounds(location)) {

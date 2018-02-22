@@ -27,6 +27,6 @@ public class Player {
 
     //Game check
     public boolean isGameLoss() {
-        return health == 0;
+        return health <= 0;
     }
 }

@@ -20,8 +20,8 @@ public class Input {
     private final int ASCII_MIN_INT = 49;
     private final int ASCII_MAX_INT = 57;
 
-    //A normal ten used for string length of 3
-    private final int LOC_TEN = 10;
+    //A normal nine used for string length of 3
+    private final int LOC_NINE = 9;
 
     public Input() {           }
 
@@ -40,30 +40,36 @@ public class Input {
         if(userInput.length() == 2) {
             return new Location(convertFirstCharToInt(userInput), convertSecondCharToInt(userInput));
         }
-        return new Location(convertFirstCharToInt(userInput), LOC_TEN);
+        return new Location(convertFirstCharToInt(userInput), LOC_NINE);
 
     }
 
     //Traps the user in a infinite for loop if they keep entering incorrect input.
     //CASE-Incentive
     private boolean isValidLocation(String userInput) {
+        int maxCharThreshold = 3;
+        int charSizeTwo = 2;
         //Checks if the length of the string is > 3
-        if(userInput.length() > 3) {
+        if(userInput.length() > maxCharThreshold) {
             return false;
         }
 
+        //Checks for only 1 char.
+        if(userInput.length() < charSizeTwo) {
+            return false;
+        }
         //Case 1: The length of the input is 2, so we should have some
-        if(userInput.length() == 2) {
+        if(userInput.length() == charSizeTwo) {
             return isFirstCharValid(userInput) && isSecondCharValid(userInput);
         }
 
         //Case 2: The length of the input is 3, thus the number must be 10
-        if(userInput.length() == 3) {
+        if(userInput.length() == maxCharThreshold) {
             if(!(isFirstCharValid(userInput))) {
                 return false;
             }
 
-            String shouldBeTen = userInput.substring(1,2);
+            String shouldBeTen = userInput.substring(1,3);
             return shouldBeTen.equals(TEN);
         }
         return true;

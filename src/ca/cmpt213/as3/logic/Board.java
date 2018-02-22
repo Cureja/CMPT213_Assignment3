@@ -39,21 +39,6 @@ public class Board {
             options.addAll(legalConnectingTileLocations(start));
             addSectionsToTank(tank, options, tanksToAdd - tanksAdded);
             Location[] tankLocation = tank.toArray(new Location[0]);
-//            Error checking
-//            System.out.println(tanksAdded);
-//            for(Location l : tankLocation) {
-//                if(board[l.row][l.col] == Tile.HIDDEN_TANK) {
-//                    System.out.println(l.row + "," + l.col);
-//                }
-//                for(Tank t : tanksOnBoard) {
-//                    if(t.isInBounds(l)) {
-//                        System.out.println("----------------------------------------------------");
-//                    }
-//                }
-//                if(tank.size() < Tank.getSize()) {
-//                    System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
-//                }
-//            }
             tanksOnBoard.add(new Tank(tankLocation));
         }
     }
@@ -211,5 +196,9 @@ public class Board {
             sum += floodFillEmpty(tile);
         }
         return sum;
+    }
+
+    public List<Tank> getTanksOnBoard() {
+        return tanksOnBoard;
     }
 }

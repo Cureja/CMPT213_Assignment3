@@ -20,12 +20,17 @@ public class Player {
         return health;
     }
 
-    //Player
+    //Player takes damage based off a passed damage value
     public void takeDamage(int damage) {
         this.health -= damage;
+
+        //Ensure that this health does not go below zero.
+        if(this.health < 0) {
+            this.health = 0;
+        }
     }
 
-    //Game check
+    //Check if the player has no health left
     public boolean isGameLoss() {
         return health <= 0;
     }

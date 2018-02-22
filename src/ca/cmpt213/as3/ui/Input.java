@@ -4,6 +4,12 @@ import ca.cmpt213.as3.logic.Location;
 
 import java.util.Scanner;
 
+/**
+ * Input has the responsibility of ensuring correct user input
+ * and the parsing for the inputs in the case of 2 and 3 char inputs
+ */
+
+
 public class Input {
     //Just a comparision used for a later case
     private final String TEN = "10";
@@ -25,10 +31,12 @@ public class Input {
 
     public Input() {           }
 
-    //Has a while loop to check the validity of it.
+    //This class return a location based off what the user entered
     public Location readLocation(String userInput) {
         boolean ValidLocation = isValidLocation(userInput);
-        while(!(ValidLocation)) {
+
+        //Has a while loop to check the validity of the input.
+        while (!(ValidLocation)) {
             System.out.println("Commander! Those are civilians we are targeting! " +
                                 "Please enter a new coordinate, such as A10");
             System.out.print("Enter your move: ");
@@ -37,35 +45,35 @@ public class Input {
             ValidLocation = isValidLocation(userInput);
         }
 
-        if(userInput.length() == 2) {
+        //Accomodate the two cases.
+        if (userInput.length() == 2) {
             return new Location(convertFirstCharToInt(userInput), convertSecondCharToInt(userInput));
         }
         return new Location(convertFirstCharToInt(userInput), LOC_NINE);
 
     }
 
-    //Traps the user in a infinite for loop if they keep entering incorrect input.
-    //CASE-Incentive
+    //Checks the validity of input
     private boolean isValidLocation(String userInput) {
         int maxCharThreshold = 3;
         int charSizeTwo = 2;
         //Checks if the length of the string is > 3
-        if(userInput.length() > maxCharThreshold) {
+        if (userInput.length() > maxCharThreshold) {
             return false;
         }
 
         //Checks for only 1 char.
-        if(userInput.length() < charSizeTwo) {
+        if (userInput.length() < charSizeTwo) {
             return false;
         }
         //Case 1: The length of the input is 2, so we should have some
-        if(userInput.length() == charSizeTwo) {
+        if (userInput.length() == charSizeTwo) {
             return isFirstCharValid(userInput) && isSecondCharValid(userInput);
         }
 
         //Case 2: The length of the input is 3, thus the number must be 10
         if(userInput.length() == maxCharThreshold) {
-            if(!(isFirstCharValid(userInput))) {
+            if (!(isFirstCharValid(userInput))) {
                 return false;
             }
 
@@ -78,7 +86,7 @@ public class Input {
     //Checks the first char for it's validity
     private boolean isFirstCharValid(String userInput) {
         char firstLetter = userInput.charAt(0);
-        if(firstLetter < ASCII_MIN_FOR_LOWERCASE || firstLetter > ASCII_MAX_FOR_LOWERCASE) {
+        if (firstLetter < ASCII_MIN_FOR_LOWERCASE || firstLetter > ASCII_MAX_FOR_LOWERCASE) {
             return firstLetter >= ASCII_MIN_FOR_UPPERCASE && firstLetter <= ASCII_MAX_FOR_UPPERCASE;
         }
         return true;
@@ -93,7 +101,7 @@ public class Input {
     //A helper method used to convert the first char assuming it is a valid one
     private int convertFirstCharToInt(String userInput) {
         char firstLetter = userInput.charAt(0);
-        if(firstLetter >= ASCII_MIN_FOR_LOWERCASE && firstLetter <= ASCII_MAX_FOR_LOWERCASE) {
+        if (firstLetter >= ASCII_MIN_FOR_LOWERCASE && firstLetter <= ASCII_MAX_FOR_LOWERCASE) {
             return (int)firstLetter - ASCII_MIN_FOR_LOWERCASE;
         }
         else {

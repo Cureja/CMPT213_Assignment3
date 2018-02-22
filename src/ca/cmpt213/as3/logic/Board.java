@@ -201,4 +201,14 @@ public class Board {
     public List<Tank> getTanksOnBoard() {
         return tanksOnBoard;
     }
+
+    private int getTankIndex(Location location) {
+        for(int i = 0; i < tanksOnBoard.size(); i++) {
+            Tank tank = tanksOnBoard.get(i);
+            if(tank.isInBounds(location)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

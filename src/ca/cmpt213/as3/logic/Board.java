@@ -21,6 +21,7 @@ public class Board {
             }
         }
         createTanksOnBoard(numberOfTanks);
+
     }
 
     private void createTanksOnBoard(int tanksToAdd) {
@@ -31,20 +32,34 @@ public class Board {
             do {
                 row = (int) (BOARD_DIMENSION * Math.random());
                 col = (int) (BOARD_DIMENSION * Math.random());
-            } while (board[row][col] != Tile.HIDDEN_MISS && getMaxPiecesCanAddToArea(new Location(row,col)) > 0);
+            } while (board[row][col] != Tile.HIDDEN_MISS || getMaxPiecesCanAddToArea(new Location(row,col)) == 0);
             Location start = new Location(row, col);
             tank.add(start);
-            //System.out.println(getMaxPiecesCanAdd());
             board[row][col] = Tile.HIDDEN_TANK;
             options.addAll(legalConnectingTileLocations(start));
             addSectionsToTank(tank, options, tanksToAdd - tanksAdded);
             Location[] tankLocation = tank.toArray(new Location[0]);
+//            Error checking
+//            System.out.println(tanksAdded);
+//            for(Location l : tankLocation) {
+//                if(board[l.row][l.col] == Tile.HIDDEN_TANK) {
+//                    System.out.println(l.row + "," + l.col);
+//                }
+//                for(Tank t : tanksOnBoard) {
+//                    if(t.isInBounds(l)) {
+//                        System.out.println("----------------------------------------------------");
+//                    }
+//                }
+//                if(tank.size() < Tank.getSize()) {
+//                    System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
+//                }
+//            }
             tanksOnBoard.add(new Tank(tankLocation));
         }
     }
 
     private boolean addSectionsToTank(List<Location> tank, List<Location> pastOptions, Integer tanksToBeAdded) {
-        if (tanksToBeAdded < getMaxPiecesCanAdd()) {
+        if (tanksToBeAdded-1 > getMaxPiecesCanAdd()) {
             return false;
         } else if (tank.size() == Tank.getSize()) {
             return true;
@@ -57,13 +72,14 @@ public class Board {
         boolean isSelectionCorrect = false;
         List<Location> trialSurround = null;
         while(!isSelectionCorrect) {
-            if(options.isEmpty()) {
-                return false;
-            } else if(trialSurround != null) {
+            if(trialSurround != null) {
                 Location remove = tank.get(tank.size()-1);
                 board[remove.row][remove.col] = Tile.HIDDEN_MISS;
                 tank.remove(tank.size()-1);
                 options.removeAll(trialSurround);
+            }
+            if(options.isEmpty()) {
+                return false;
             }
             int selection = (int)(options.size() * Math.random());
             Location trialSection = options.remove(selection);
@@ -151,9 +167,8 @@ public class Board {
         for(int row = 0; row < BOARD_DIMENSION; row++) {
             for(int col = 0; col < BOARD_DIMENSION; col++) {
                 if(board[row][col] == Tile.HIDDEN_MISS) {
-                    int i = floodFillEmpty(new Location(row, col));
-                    System.out.println(i);
-                    maxPieces += i;
+                    board[row][col] = Tile.MISS;
+                    maxPieces += floodFillEmpty(new Location(row, col)) / Tank.getSize();
                 }
             }
         }
@@ -170,6 +185,7 @@ public class Board {
 
     private int getMaxPiecesCanAddToArea(Location start) {
         if(getTile(start) == Tile.HIDDEN_MISS) {
+            board[start.row][start.col] = Tile.MISS;
             int maxPieces = floodFillEmpty(start) / Tank.getSize();
             //clean up floodFillEmpty
             for(int row = 0; row < BOARD_DIMENSION; row++) {
@@ -179,13 +195,14 @@ public class Board {
                     }
                 }
             }
+
             return maxPieces;
         }
         return 0;
     }
 
     private int floodFillEmpty(Location start) {
-        int sum = 0;
+        int sum = 1;
         List<Location> adjacent = legalConnectingTileLocations(start);
         for(Location tile : adjacent) {
             board[tile.row][tile.col] = Tile.MISS;
